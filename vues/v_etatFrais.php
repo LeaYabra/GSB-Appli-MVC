@@ -4,10 +4,11 @@
 *
 * PHP Version 7
 *
-* @category  PPE
+@category  PPE
 * @package   GSB
-* @author    beth sefer
+* @author    beth sefer, Léa Yabra
 */
+
 ?>
 <hr>
 <div class="panel panel-primary">
