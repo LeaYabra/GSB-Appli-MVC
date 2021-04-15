@@ -1,10 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- 
 /**
 * Vue Accueil Comptable
 *
@@ -39,7 +34,7 @@
                           class="btn btn-success btn-lg" role="button"><!--Qd elle va cliquer sur le bouton, uc aurait la valeur gererFrais et action aurait la valeur saisirfrais -->
                            <span class="glyphicon glyphicon-ok"></span>
                            <br>Valider la fiche de frais</a>
-                       <a href="index.php?uc=suivrePaiementFrais&action=afficherFrais"
+                       <a href="index.php?uc=suivrePaiementFrais&action=selectionnerMoisVisiteur"
                           class="btn btn-primary btn-lg" role="button">
                            <span class="glyphicon glyphicon-euro"></span>
                            <br>Suivre les fiches de frais</a>

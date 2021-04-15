@@ -62,8 +62,8 @@ case 'deconnexion':
 case 'validerFrais':
     include'controleurs/c_validerFrais.php';
     break;
-case 'suivrePayementFrais':
-    include 'controleurs/c_suivrePayementFrais.php';
+case 'suivrePaiementFrais':
+    include 'controleurs/c_suivrePaiementFrais.php';
     break;
 
 

@@ -11,6 +11,7 @@
 
 ?>
        </div> <!--ca ferme les balises -->
+       
    </body>
 </html>
 

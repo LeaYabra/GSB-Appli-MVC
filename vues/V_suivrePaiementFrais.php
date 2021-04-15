@@ -1,6 +1,7 @@
 <?php
+
 /**
-* Vue Liste des mois
+* Vue suivre Paiement Frais
 *
 * PHP Version 7
 *
@@ -9,10 +10,10 @@
 * @author    beth sefer, Léa Yabra
 */
 ?>
-<h2>Mes fiches de frais</h2>
+<h2>Suivre le Paiement de la Fiche de Frais</h2>
 <div class="row">
    <div class="choix visiteur">
-       <form action="index.php?uc=validerFrais&action=afficherFrais"
+       <form action="index.php?uc=suivrePaiementFrais&action=afficherFrais"
              method="post" role="form">
           
                    
@@ -79,5 +80,3 @@
        </form>
           </div>   
   </div>
-
-             

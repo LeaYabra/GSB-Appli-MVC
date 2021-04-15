@@ -29,7 +29,7 @@ case 'majFraisForfait':
 //si le tableau contient que des nb positifs
        $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
        } else {
-       ajouterErreur('Les valeurs des frais doivent être numériques');
+           ajouterErreur('Les valeurs des frais doivent être numériques');
        include 'vues/v_erreurs.php';
    }
    break;
@@ -37,7 +37,7 @@ case 'validerCreationFrais':
    $dateFrais = filter_input(INPUT_POST, 'dateFrais', FILTER_SANITIZE_STRING);
    $libelle = filter_input(INPUT_POST, 'libelle', FILTER_SANITIZE_STRING);
    $montant = filter_input(INPUT_POST, 'montant', FILTER_VALIDATE_FLOAT);
-   var_dump($montant);//affiche le montant à l'écran
+
    valideInfosFrais($dateFrais, $libelle, $montant);//elle verifie si ttes les données ont été remplies et si elles correspondent au tyoe de caractere
    if (nbErreurs()!=0) {//si y a une erreur
        include 'vues/v_erreurs.php';

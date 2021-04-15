@@ -1,5 +1,9 @@
 <?php
-/*
+/* **
+* Vue Afficher Frais
+*
+* PHP Version 7
+*
  *@category  PPE
 * @package   GSB
 * @author    beth sefer, Léa Yabra
@@ -78,8 +82,7 @@ foreach ($lesMois as $unMois) {//on met le mois en local
             <h2 style = "color : orange">Valider la fiche de frais</h2>
             <h3>Eléments forfaitisés</h3> 
             <div class="col-md-4"> 
-                <input type="hidden" id="lstMois" name="lstMois" <?php echo $moisASelectionner ?>>
-                <input type="hidden" id="lstVisiteurs" name="lstVisiteurs" <?php echo $visiteurASelectionner ?>>
+                
                 <!-- On va ds l'index -->
                 <fieldset>      
 <?php
@@ -103,7 +106,7 @@ foreach ($lesFraisForfait as $unFrais) {
                     ?>
 
 
-                    <button class="btn btn-success" type="edit">Corriger</button>
+                    <button  class="btn btn-success" type="edit">Corriger</button>
                     <button class="btn btn-danger" type="reset">Réinitialiser</button>
 
                 </fieldset>
@@ -121,10 +124,12 @@ element hors forfait-->
 
 <div class="panel panel-info-comptable">
     <div class="panel-heading">Descriptif des éléments hors forfait </div>
-    <table class="table table-bordered table-responsive">
-        <form method="post"
+    
+     <form method="post"
               accept-charset=""action="index.php?uc=validerFrais&action=corrigerFraisHorsForfait"
-              accesskey=""role="form">     
+              accesskey=""role="form">  
+    <table class="table table-bordered table-responsive">
+          
             <tr>
                 <th class="date">Date</th>
                 <th class="libelle">Libellé</th>
@@ -158,21 +163,30 @@ element hors forfait-->
                 <?php
             }
             ?>
-
     </table>
+    </form>
+
 </div>
-</form>
 
 
-<form action="index.php?uc=validerFrais&action=validModif"
+
+<form action="index.php?uc=validerFrais&action=validerfichefrais"
       method="post" role="form">
-    <div class="row">  
-        <div class="col-md-4">
+     <div class="col-md-4">
+         
+        <input id ="lstMois" name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
+        <input id ="lstVisiteurs" name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
+        <label for="nbrjustificatif" >Nombre de Justficatifs : </label>
+        <input  name="nombrejustificatifs" type="text" size="3" maxlength="5" 
+         id="nombrejustificatifs">
+        <br><br>
+        <br><br>
+        
             <button class="btn btn-success" type="submit">Valider</button>
-            <button class="btn btn-danger" type="reset">Réinitialiser</button>
-
+             <button class="btn btn-danger" type="reset">Reintialiser</button>
+           
         </div>
-    </div>
+    
 
 </form>   
 
