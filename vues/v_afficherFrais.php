@@ -95,7 +95,7 @@ foreach ($lesFraisForfait as $unFrais) {
                         <div class="form-group">
                             <label for="idFrais"><?php echo $libelle ?></label><!-- On affiche le libellé -->
                             <input type="text" id="idFrais"
-                                   name="lesFraisF"<?php echo $idFrais ?>
+                                   name="lesFraisF[<?php echo $idFrais ?>]"
                                    size="10" maxlength="5"
                                    value="<?php echo $quantite ?>"
                                    class="form-control">
@@ -138,10 +138,10 @@ element hors forfait-->
             </tr>
             <?php
             foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
-                $date = $unFraisHorsForfait['date'];
-                $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
-                $montant = $unFraisHorsForfait['montant'];
-                $lesFraisHF = $unFraisHorsForfait['id'];
+                $date= $unFraisHorsForfait['date'];
+                $libelle= htmlspecialchars($unFraisHorsForfait['libelle']);
+                $montant= $unFraisHorsForfait['montant'];
+                $lesFraisHF= $unFraisHorsForfait['id'];
                 ?>
 
                 <input name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
@@ -178,7 +178,7 @@ element hors forfait-->
         <input id ="lstVisiteurs" name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
         <label for="nbrjustificatif" >Nombre de Justficatifs : </label>
         <input  name="nombrejustificatifs" type="text" size="3" maxlength="5" 
-         id="nombrejustificatifs">
+         id="nombrejustificatifs" value="<?php echo $nbrjustificatifs ?>">
         <br><br>
         <br><br>
         

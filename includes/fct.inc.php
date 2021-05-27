@@ -257,6 +257,34 @@ function nbErreurs()
     }
     
 }
+/**
+    * Retoune le mois qui suit le mois donne
+    *
+    * @param  $mois
+    * @return type
+    */
+function getMoisSuivant($mois)
+{
+    $numAnnee = substr($mois, 0, 4);
+    $numMois = substr($mois, 4, 2);
+    if ($numMois == '12') {
+        $numMois = '01';
+        $numAnnee++;
+    } else {
+        $numMois++;
+    }
+    if (strlen($numMois) == 1) {
+        $numMois = '0' . $numMois;
+    }
+    return $numAnnee . $numMois;
+}
+
+    /**
+    * Retoune le mois qui precede le mois donne
+    *
+    * @param  $mois
+    * @return type
+    */
 
 function getMoisPrecedent($mois)
 {
@@ -274,6 +302,12 @@ $numAnnee = substr($mois, 0,4);
    return $numAnnee.$numMois;
 }
 
+/**
+ * Retoune les douze derniers mois
+ *
+ * @param  $mois
+ * @return type
+ */
 
  function lesdouzederniermois($mois){
     $lesMois = array ();

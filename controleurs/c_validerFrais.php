@@ -34,15 +34,16 @@ switch ($action) {
 
 
     case 'afficherFrais':
-        $idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
         $lesVisiteurs = $pdo->getLesVisiteurs();
+        $idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
         $visiteurASelectionner = $idVisiteur;
         $mois = filter_input(INPUT_POST, 'lstMois', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
         $lesMois = lesdouzederniermois($moisAnnee);
         $moisASelectionner = $mois;
         $infosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
         $lesFraisForfait = $pdo->getlesFraisForfait($idVisiteur, $mois);
-        $lesFraisHorsForfait = $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
+        $lesFraisHorsForfait= $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
+        $nbrjustificatifs= $pdo->getnbJustificatifs($idVisiteur, $mois);
         
     if (!is_array($infosFicheFrais)) {
             ajouterErreur('Pas de fiche de frais pour ce visiteur et ce mois');
@@ -60,7 +61,7 @@ switch ($action) {
         $visiteurASelectionner = $idVisiteur;
         $mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
         $moisASelectionner = $mois;
-        $lesFrais = filter_input(INPUT_POST, 'lesFraisF', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+        $lesFrais= filter_input(INPUT_POST, 'lesFraisF', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
     
         if (lesQteFraisValides($lesFrais)) {
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
@@ -69,8 +70,8 @@ switch ($action) {
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
         }
-        $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
-        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
+         $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur, $mois);
+        $lesFraisHorsForfait= $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
         include 'vues/v_afficherFrais.php';
 
         break;
@@ -94,69 +95,81 @@ switch ($action) {
                 $pdo->majFraisHorsForfait($idVisiteur,$mois,$libelle,$dateHF,$montantHF,$lesFraisHF);
                 echo "La modification a bien été prise en compte.";
           }
-          $lesFraisHorsForfait = $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
-          $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
+          $lesFraisHorsForfait= $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
+         $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur, $mois);
           include 'vues/v_afficherFrais.php';
         
         
 }if(isset($_POST['reporter'])){
-           
-              //$idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
+    
+      //$idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
                //$mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
 
-              $idFraisHF = filter_input(INPUT_POST, 'lesFraisHF', FILTER_SANITIZE_NUMBER_INT);
-              $date = filter_input(INPUT_POST, 'dateHF', FILTER_SANITIZE_STRING);       
-              $montant = filter_input(INPUT_POST, 'montantHF', FILTER_SANITIZE_STRING);
-             
-              
-            $laDerniereFiche = $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
+       $lesFraisForfait = $pdo->getlesFraisForfait($idVisiteur, $mois);
+       $lesFraisHorsForfait= $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
+       $idFraisHF = filter_input(INPUT_POST, 'lesFraisHF', FILTER_SANITIZE_NUMBER_INT);
+       $idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
+       $mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
+       $date = filter_input(INPUT_POST, 'dateHF', FILTER_SANITIZE_STRING);       
+       $montant = filter_input(INPUT_POST, 'montantHF', FILTER_SANITIZE_STRING);
+        $libelle = filter_input(INPUT_POST, 'libelleHF', FILTER_SANITIZE_STRING);
+        
+           
             
-               $pdo->majLibelle($idVisiteur, $mois, $idFraisHF);
-               
-               if ($laDerniereFiche['idEtat'] == 'CR') {
-               $pdo->majEtatFicheFrais($idVisiteur, $mois, 'CL');
-              }
-               
-               $lemois=$mois+1;
+                  if (isset($_POST['reporter'])) {
+                     $pdo->majLibelle($idVisiteur, $mois, $idFraisHF);
+            
+
+            //cloture la fiche de ce mois
+            $laDerniereFiche= $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
+
+
+            //cree une nouvelle fiche de frais
+            $mois = getMoisSuivant($mois);
+            //nous dit si ce mois est ds la table fiche frais si ya une fiche frais pr ce mois
+            if ($pdo->estPremierFraisMois($idVisiteur, $mois) == false) {
+                $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
+            }
+           
+           
                $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle,$date, $montant);
                 include 'vues/v_afficherFrais.php';
                 
-             
-                
+              break; 
       }
-      
+}
       //valide maj etat date et enregistre nbrde justificatif
    case'validerfichefrais':
-   $nbrjustificatifs = filter_input(INPUT_POST, 'nombrejustificatifs', FILTER_SANITIZE_NUMBER_INT);
-   $mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
-   $idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
-   $pdo->majNbJustificatifs($idVisiteur, $mois, $nbrjustificatifs);
-   
-   
-   if(!$nbrjustificatifs){
-          $pdo->majEtatFicheFrais($idVisiteur, $mois, 'VA');
-           echo "Cette fiche a été validee";
-       }else{
-           ajouterErreur('Les valeurs contiennent une erreur');
-              include 'vues/v_erreurs.php';
-       }
        
-   $sommeF= $pdo->CalculeSommeF($idVisiteur,$mois);
-   $sommeHF= $pdo->CalculeSommeHF($idVisiteur,$mois);
-   $sommeTotale=  $sommeF+ $sommeHF;
-   $pdo->MontantValide($idVisiteur,$mois,$sommeTotale);
-   
-   
-   
-       
+        $lesVisiteurs= $pdo->getLesVisiteurs();
+        $idVisiteur= filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
+        $visiteurASelectionner = $idVisiteur;
+        
+        $mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
+        $moisASelectionner = $mois;
+        $lesMois = lesdouzederniermois($mois);
+        
     
+       
+   $nbrjustificatifs = filter_input(INPUT_POST, 'nombrejustificatifs', FILTER_SANITIZE_STRING);
    
-          
+   $pdo->majNbJustificatifs($idVisiteur, $mois, $nbrjustificatifs);
+   $pdo->majEtatFicheFrais($idVisiteur, $mois, 'VA');
+   
+  
+   $sommeF= $pdo->calculF($idVisiteur,$mois);
+   $sommeHF= $pdo->calculHF($idVisiteur,$mois);
+   $sommeTotale= $sommeF[0]+$sommeHF;
+   $pdo->MontantValide($idVisiteur,$mois,$sommeTotale, $nbrjustificatifs);
+   
+   ?>
+   <div class="alert alert-info" role="alert">
+   <p>La fiche a bien été validée ! <a href="index.php">Cliquez ici</a>
+       pour revenir à la page d'accueil.</p>
+    </div>
+    <?php
+  
         break;
 }
      
-    
-
-
-
-   
+ 
